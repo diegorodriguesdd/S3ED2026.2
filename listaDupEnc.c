@@ -67,6 +67,47 @@ int removerI(struct no **l){
   return 1;
 }
 
+int remover(struct no **l, int valor){
+  if(*l == NULL) {
+    printf("Sem valores a remover");
+    return 0;
+  }
+
+  struct no *aux = *l;
+  while(aux && aux->valor != valor){
+    aux = aux->prox;
+  }
+  if(aux->valor != valor){
+    printf("Valor nao encontrado");
+    return 1;
+  }
+
+  if(aux == *l){
+    *l = aux->prox;
+    aux->prox->ant = NULL;
+  }
+  if(aux->prox == NULL){
+     aux->ant->prox = NULL;
+  }
+  if(aux->prox && aux->ant){
+    aux->ant->prox = aux->prox;
+    aux->prox->ant = aux->ant; 
+  }
+  free(aux);
+  return 1;
+}
+
+int removerF(struct no **l){
+  struct no *aux = *l;
+
+  while(aux && aux->prox){
+    aux = aux->prox;
+  }
+
+  aux->ant->prox = NULL;
+  free(aux);
+}
+
 int mostrar(struct no *aux){
   printf("[ ");
   while(aux){
@@ -117,6 +158,19 @@ int main(){
   removerI(&lista);
   mostrar(lista);
   removerI(&lista);
+  mostrar(lista);
+
+  printf("\nRemovendo especifico\n");
+  remover(&lista, 2);
+  mostrar(lista);
+  remover(&lista, 6);
+  mostrar(lista);
+
+
+  printf("\nRemovendo ultimo \n");
+  inserirF(&lista, 9);
+  mostrar(lista);
+  removerF(&lista);
   mostrar(lista);
 
   return 0;
